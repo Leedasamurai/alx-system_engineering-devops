@@ -1,3 +1,2 @@
 #!/bin/bash
-find . -type f -name "*.gif" | awk -F/ '{print $NF}' | sed 's/\.gif$//' | LC_COLLATE=C sort -f -d
-echo
+find . -type f -name "*.gif" | rev | cut -d / -f | cut -d . -f 2,3 | rev | LC_ALL=C sort -f
