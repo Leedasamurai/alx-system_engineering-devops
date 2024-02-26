@@ -1,0 +1,16 @@
+# Ensure SSH client configuration
+file_line { 'Turn off passwd auth':
+  path => '/etc/ssh/ssh_config',
+  line => 'PasswordAuthentication no',
+}
+
+file_line { 'Declare identity file':
+  path => '/etc/ssh/ssh_config',
+  line => 'IdentityFile ~/.ssh/school',
+  notify => Service['ssh'],
+}
+
+service { 'ssh':
+  ensure => 'running',
+  enable => true,
+}
