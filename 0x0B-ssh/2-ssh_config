@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# This script configures the SSH client to use specific settings
+
+# Ensure the SSH configuration directory exists
+mkdir -p ~/.ssh
+
+# Create or modify the SSH client configuration file
+cat << EOF > ~/.ssh/config
+Host *
+    SendEnv LANG LC_*
+    HashKnownHosts yes
+    GSSAPIAuthentication yes
+    GSSAPIDelegateCredentials no
+    IdentityFile ~/.ssh/school
+    PasswordAuthentication no
+EOF
