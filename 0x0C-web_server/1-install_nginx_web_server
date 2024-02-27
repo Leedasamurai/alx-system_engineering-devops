@@ -1,24 +1,7 @@
 #!/usr/bin/env bash
-# Installs Nginx and configures it to return "Hello World!" on the root URL
+# Installs Nginx
 
-# Install Nginx with the -y flag to automatically answer yes to prompts
 apt-get update
 apt-get install -y nginx
-
-# Modify the default Nginx configuration to return "Hello World!"
-echo 'server {
-        listen 80 default_server;
-        listen [::]:80 default_server;
-
-        root /var/www/html;
-        index index.html index.htm index.nginx-debian.html;
-
-        server_name _;
-
-        location / {
-                echo "Hello World!";
-        }
-}' > /etc/nginx/sites-available/default
-
-# Restart Nginx to apply the changes
-service nginx restart
+echo "Hello World!" > /var/www/html/index.html
+service nginx start
