@@ -30,6 +30,6 @@ nginx::resource::vhost { 'redirect_me':
   listen_port  => '80',
   server_name  => '_',
   ensure       => present,
-  redirect_to  => 'https://twitter.com/Emmanue17280546',
+  redirect_to  => 'https://www.youtube.com/watch?v=QH2-TGUlwu4',
   redirect_code => '301',
 }
