@@ -1,5 +1,43 @@
 #!/usr/bin/env bash
-# Configure Nginx to listen on port 80
+# Fixes Nginx configuration to ensure it listens on port 80
 
-sed -i 's/8080/80/g' /etc/nginx/sites-enabled/default
-service nginx restart
+# Step 1: Install Nginx if it's not installed (as before)
+if ! command -v nginx >/dev/null 2>&1; then
+    echo "Nginx is not installed. Installing..."
+    apt-get update && apt-get install -y nginx
+fi
+
+# Step 2: Ensure Nginx is enabled and try to start the service
+systemctl enable nginx
+systemctl start nginx
+
+# Step 3: Adjust firewall rules if necessary (assuming UFW is in use)
+ufw allow 'Nginx Full'
+
+# Step 4: Check for port conflicts on port 80
+if netstat -tuln | grep ':80 ' >/dev/null; then
+    echo "Another service is listening on port 80. Attempting to resolve..."
+    # You might add steps here to identify and stop the conflicting service,
+    # but be cautious about stopping services automatically.
+fi
+
+# Step 5: Ensure the Nginx configuration is set to listen on port 80
+CONF_FILE="/etc/nginx/sites-available/default"
+sed -i 's/listen[ \t]\+.*;/listen 80;/' "$CONF_FILE"
+
+# Step 6: Test Nginx configuration and reload if OK
+if nginx -t; then
+    systemctl reload nginx
+    echo "Nginx is now configured to listen on port 80."
+else
+    echo "Nginx configuration test failed."
+    exit 1
+fi
+
+# Final check - might need manual verification if script automation is a concern
+if ! curl -sI http://localhost/ | grep '200 OK' > /dev/null; then
+    echo "Nginx is not serving content on port 80 as expected."
+    exit 1
+else
+    echo "Success: Nginx is up and running on port 80."
+fi
