@@ -1,15 +1,15 @@
 Hit:1 http://security.ubuntu.com/ubuntu focal-security InRelease
-Hit:2 http://ppa.launchpad.net/brightbox/ruby-ng/ubuntu focal InRelease
-Hit:3 https://deb.nodesource.com/node_14.x focal InRelease
-Hit:4 https://download.docker.com/linux/ubuntu focal InRelease
-Hit:5 http://archive.ubuntu.com/ubuntu focal InRelease
-Hit:6 http://archive.ubuntu.com/ubuntu focal-updates InRelease
-Hit:7 http://archive.ubuntu.com/ubuntu focal-backports InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu focal InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu focal-updates InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu focal-backports InRelease
+Hit:5 https://download.docker.com/linux/ubuntu focal InRelease
+Hit:6 http://ppa.launchpad.net/brightbox/ruby-ng/ubuntu focal InRelease
+Hit:7 https://deb.nodesource.com/node_14.x focal InRelease
 Reading package lists...
 Reading package lists...
 Building dependency tree...
 Reading state information...
-nginx is already the newest version (1.18.0-0ubuntu1.4).
+curl is already the newest version (7.68.0-1ubuntu2.21).
 The following packages were automatically installed and are no longer required:
   bridge-utils dns-root-data dnsmasq-base ubuntu-fan
 Use 'apt autoremove' to remove them.

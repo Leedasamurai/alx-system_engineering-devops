@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
-# Setting up server to curl port 80 with no issues
+
+# Update package repositories and install curl
 apt-get update
 apt-get -y install curl
-rm /etc/nginx/sites-available/*
-rm /etc/nginx/sites-enabled/*~
+
+# Modify Nginx configuration to listen on port 80 and serve HTML content
 sed -i 's/8080/80/g' /etc/nginx/sites-enabled/default
-sudo service nginx restart
+sed -i '/root \/var\/www\/html;/a \\tindex index.html index.htm;' /etc/nginx/sites-enabled/default
+
+# Restart Nginx to apply the changes
+service nginx restart
+
