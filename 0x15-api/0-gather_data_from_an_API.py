@@ -1,41 +1,37 @@
 #!/usr/bin/python3
+
 """
-Script that, using a given REST API, for a given employee ID, returns
-information about his/her TODO list progress.
+Python script that, using a REST API, for a given employee ID,
+returns information about his/her TODO list progress.
 """
-import requests
-import sys
+
+from requests import get
+from sys import argv
+
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: {} <employee_id>".format(sys.argv[0]))
-        sys.exit(1)
+    response = get('https://jsonplaceholder.typicode.com/todos/')
+    data = response.json()
+    completed = 0
+    total = 0
+    tasks = []
+    response2 = get('https://jsonplaceholder.typicode.com/users')
+    data2 = response2.json()
 
-    employee_id = sys.argv[1]
-    base_url = 'https://jsonplaceholder.typicode.com'
-    url_user = '{}/users/{}'.format(base_url, employee_id)
-    url_todos = '{}/todos?userId={}'.format(base_url, employee_id)
+    for i in data2:
+        if i.get('id') == int(argv[1]):
+            employee = i.get('name')
 
-    user_response = requests.get(url_user)
-    todos_response = requests.get(url_todos)
+    for i in data:
+        if i.get('userId') == int(argv[1]):
+            total += 1
 
-    if user_response.status_code != 200:
-        print("Error: User data not found")
-        sys.exit(1)
+            if i.get('completed') is True:
+                completed += 1
+                tasks.append(i.get('title'))
 
-    if todos_response.status_code != 200:
-        print("Error: TODO data not found")
-        sys.exit(1)
+    print("Employee {} is done with tasks({}/{}):".format(employee, completed,
+        total))
 
-    user_data = user_response.json()
-    todos_data = todos_response.json()
-
-    employee_name = user_data.get('name')
-    total_tasks = len(todos_data)
-    completed_tasks = sum(1 for todo in todos_data if todo.get('completed'))
-
-    print("Employee {} is done with tasks({}/{}):".format(
-        employee_name, completed_tasks, total_tasks))
-    for todo in todos_data:
-        if todo.get('completed'):
-            print("\t{}".format(todo.get('title')))
+    for i in tasks:
+        print("\t {}".format(i))
