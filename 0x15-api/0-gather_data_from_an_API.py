@@ -12,8 +12,9 @@ if __name__ == "__main__":
         sys.exit(1)
 
     employee_id = sys.argv[1]
-    url_user = 'https://jsonplaceholder.typicode.com/users/{}'.format(employee_id)
-    url_todos = 'https://jsonplaceholder.typicode.com/todos?userId={}'.format(employee_id)
+    base_url = 'https://jsonplaceholder.typicode.com'
+    url_user = '{}/users/{}'.format(base_url, employee_id)
+    url_todos = '{}/todos?userId={}'.format(base_url, employee_id)
 
     user_response = requests.get(url_user)
     todos_response = requests.get(url_todos)
