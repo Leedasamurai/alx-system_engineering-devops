@@ -1,30 +1,39 @@
 #!/usr/bin/python3
-"""For a given employee ID, returns information about
-their TODO list progress"""
-
+"""
+Script that, using a given REST API, for a given employee ID, returns
+information about his/her TODO list progress.
+"""
 import requests
 import sys
 
 if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: {} <employee_id>".format(sys.argv[0]))
+        sys.exit(1)
 
-    userId = sys.argv[1]
-    user = requests.get("https://jsonplaceholder.typicode.com/users/{}"
-            .format(userId))
+    employee_id = sys.argv[1]
+    url_user = 'https://jsonplaceholder.typicode.com/users/{}'.format(employee_id)
+    url_todos = 'https://jsonplaceholder.typicode.com/todos?userId={}'.format(employee_id)
 
-    name = user.json().get('name')
+    user_response = requests.get(url_user)
+    todos_response = requests.get(url_todos)
 
-    todos = requests.get('https://jsonplaceholder.typicode.com/todos')
-    totalTasks = 0
-    completed = 0
+    if user_response.status_code != 200:
+        print("Error: User data not found")
+        sys.exit(1)
 
-    for task in todos.json():
-        if task.get('userId') == int(userId):
-            totalTasks += 1
-            if task.get('completed'):
-                completed += 1
+    if todos_response.status_code != 200:
+        print("Error: TODO data not found")
+        sys.exit(1)
 
-    print('Employee {} is done with tasks({}/{}):'
-            .format(name, completed, totalTasks))
+    user_data = user_response.json()
+    todos_data = todos_response.json()
 
-    print('\n'.join(["\t " + task.get('title') for task in todos.json()
-        if task.get('userId') == int(userId) and task.get('completed')]))
+    employee_name = user_data.get('name')
+    total_tasks = len(todos_data)
+    completed_tasks = sum(1 for todo in todos_data if todo.get('completed'))
+
+    print("Employee {} is done with tasks({}/{}):".format(employee_name, completed_tasks, total_tasks))
+    for todo in todos_data:
+        if todo.get('completed'):
+            print("\t {}".format(todo.get('title')))
