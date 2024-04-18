@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Get the process IDs of the current Gunicorn workers
+pgrep gunicorn | xargs -I{} kill -s HUP {}
